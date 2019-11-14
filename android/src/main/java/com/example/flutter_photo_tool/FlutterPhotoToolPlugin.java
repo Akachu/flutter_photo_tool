@@ -5,6 +5,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import java.io.File;
 import android.os.Environment;
 
 /** FlutterPhotoToolPlugin */
@@ -23,8 +24,23 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
     } else if (call.method.equals("getPicturesPath")) {
       String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
       result.success(path);
+    } else if(call.method.equals("scanFile")) {
+      String path = call.argument("path");
+      result.success(scanFile(path));
     } else {
       result.notImplemented();
+    }
+  }
+
+  private boolean scanFile(String path) {
+    try {
+      Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+      intent.setData(Uri.fromFile(File(path)));
+      sendBroadcast(intent);
+      return true;
+    } catch (Exception exception) {
+      System.err.println(exception.toString());
+      return false;
     }
   }
 }

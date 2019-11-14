@@ -15,4 +15,13 @@ class FlutterPhotoTool {
     final String version = await _channel.invokeMethod('getPicturesPath');
     return version;
   }
+
+  static Future<bool> scanFile(String path) async {
+    final bool result =
+        await _channel.invokeMethod<bool>('scanFile', <String, dynamic>{
+      'path': path,
+    });
+
+    return result;
+  }
 }
