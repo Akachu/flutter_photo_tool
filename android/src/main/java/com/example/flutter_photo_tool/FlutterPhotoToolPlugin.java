@@ -18,10 +18,10 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     if (call.method.equals("getRootPath")) {
-      String path = Environment.getExternalStorageDirectory().toPath();
+      String path = Environment.getExternalStorageDirectory().getPath();
       result.success(path);
     } else if (call.method.equals("getPicturesPath")) {
-      String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toPath();
+      String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
       result.success(path);
     } else {
       result.notImplemented();
