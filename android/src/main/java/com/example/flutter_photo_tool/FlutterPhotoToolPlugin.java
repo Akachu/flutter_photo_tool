@@ -7,6 +7,8 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import java.io.File;
 import android.os.Environment;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
@@ -17,7 +19,7 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
 
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_photo_tool");
-    channel.setMethodCallHandler(new FlutterPhotoToolPlugin());
+    channel.setMethodCallHandler(new FlutterPhotoToolPlugin(registrar.activity(), channel, registrar));
   }
 
   public FlutterPhotoToolPlugin(Activity activity, MethodChannel methodChannel, Registrar registrar) {
@@ -44,9 +46,10 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
   }
 
   private boolean scanFile(String path) {
-    var context = this.registrar.activeContext().applicationContext;
-    File file = new File(path);
     try {
+      Context context = this.registrar.activeContext().getApplicationContext();
+      File file = new File(path);
+
       Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
       intent.setData(Uri.fromFile(file));
       context.sendBroadcast(intent);

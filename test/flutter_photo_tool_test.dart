@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:flutter_photo_tool/flutter_photo_tool.dart';
 import 'package:flutter_test/flutter_test.dart';
 // import 'package:flutter_photo_tool/flutter_photo_tool.dart';
 
@@ -7,7 +8,7 @@ void main() {
 
   setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
+      return methodCall.toString();
     });
   });
 
@@ -15,7 +16,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('getPlatformVersion', () async {
-    // expect(await FlutterPhotoTool.platformVersion, '42');
+  test('scanFile', () async {
+    await FlutterPhotoTool.scanFile('path');
   });
 }
