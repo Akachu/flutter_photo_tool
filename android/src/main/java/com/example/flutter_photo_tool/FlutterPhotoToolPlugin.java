@@ -35,11 +35,12 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
   }
 
   private boolean scanFile(String path) {
+    var context = registrar.activeContext().applicationContext;
     File file = new File(path);
     try {
       Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
       intent.setData(Uri.fromFile(file));
-      sendBroadcast(intent);
+      context.sendBroadcast(intent);
       return true;
     } catch (Exception exception) {
       System.err.println(exception.toString());
