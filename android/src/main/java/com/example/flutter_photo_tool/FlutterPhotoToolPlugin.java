@@ -10,12 +10,21 @@ import android.os.Environment;
 import android.content.Intent;
 import android.net.Uri;
 
-/** FlutterPhotoToolPlugin */
 public class FlutterPhotoToolPlugin implements MethodCallHandler {
-  /** Plugin registration. */
+  Activity activity;
+  MethodChannel methodChannel;
+  Registrar registrar;
+
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_photo_tool");
     channel.setMethodCallHandler(new FlutterPhotoToolPlugin());
+  }
+
+  public FlutterPhotoToolPlugin(Activity activity, MethodChannel methodChannel, Registrar registrar) {
+    this.activity = activity;
+    this.methodChannel = methodChannel;
+    this.registrar = registrar;
+    this.methodChannel.setMethodCallHandler(this);
   }
 
   @Override
@@ -35,7 +44,7 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
   }
 
   private boolean scanFile(String path) {
-    var context = registrar.activeContext().applicationContext;
+    var context = this.registrar.activeContext().applicationContext;
     File file = new File(path);
     try {
       Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
