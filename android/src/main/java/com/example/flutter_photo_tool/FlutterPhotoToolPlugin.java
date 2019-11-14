@@ -8,6 +8,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import java.io.File;
 import android.os.Environment;
 import android.content.Intent;
+import android.net.Uri;
 
 /** FlutterPhotoToolPlugin */
 public class FlutterPhotoToolPlugin implements MethodCallHandler {
@@ -34,9 +35,10 @@ public class FlutterPhotoToolPlugin implements MethodCallHandler {
   }
 
   private boolean scanFile(String path) {
+    File file = new File(path);
     try {
       Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-      intent.setData(Uri.fromFile(File(path)));
+      intent.setData(Uri.fromFile(file));
       sendBroadcast(intent);
       return true;
     } catch (Exception exception) {
